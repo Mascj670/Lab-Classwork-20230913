@@ -1,0 +1,33 @@
+/* Give body text a text-emphases. */
+
+body p {
+    text-emphasis: circle red;
+  }
+
+/* Give heading a background-color. */
+
+h2 {
+    background-color: #d48080;
+  }
+
+/* Set text with `quote` class in orange. */
+
+.quote {
+    color: orange;
+  }
+
+/* Give narrator quotes an outline-style and outline-color. */
+
+.narrator {
+    outline-style: solid;
+    outline-color: #2091e2;
+  }
+
+/* Set intro paragraphs in blue and add the transform property. */
+
+#intro p {
+    color: blue;
+    transform: rotate(220deg);
+  }
+
+  
