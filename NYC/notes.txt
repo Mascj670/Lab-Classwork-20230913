@@ -1,0 +1,524 @@
+</div>
+<div class="vspace-10"></div>
+<div class="vspace-10"></div>
+<script defer src="/js/chartjs/chart.js"></script>
+<script type="module">
+
+
+
+function Stats() {}
+
+Stats.ts_data = null;
+Stats.ts_chart = null;
+
+Stats.load = function(ts_data) {
+    Stats.ts_data = ts_data;
+};
+
+Stats.load_ts_chart = function(chart_id) {
+    if (Stats.ts_data == null) {
+        return;
+    }
+
+    const data = {
+        labels: Stats.ts_data.labels,
+
+        datasets: [
+        Stats.ts_data.data[1]
+        ]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: true,
+        },
+    };
+
+    Stats.ts_chart = new Chart(document.getElementById('ts-chart'), config);
+
+    $('.ts-chart-btn').click(function() {
+        $('.ts-chart-btn').removeClass('active');
+        Stats.update_ts_chart(this);
+        $(this).addClass('active');
+    });
+};
+
+Stats.update_ts_chart = function(chart_div) {
+    var bedrooms = $(chart_div).data('bedrooms');
+
+    if (typeof (Stats.ts_data.data[bedrooms]) == 'undefined') {
+        return;
+    }
+
+    while (Stats.ts_chart.data.datasets.length > 0) {
+        Stats.ts_chart.data.datasets.pop();
+    }
+
+    Stats.ts_chart.data.datasets.push(Stats.ts_data.data[bedrooms]);
+
+    Stats.ts_chart.update();
+}
+
+
+
+
+
+$(document).ready(function() {
+    Stats.load({
+        "labels": ["Nov 13", "Dec 13", "Jan 14", "Feb 14", "Mar 14", "Apr 14", "May 14", "Jun 14", "Jul 14", "Aug 14", "Sep 14", "Oct 14", "Nov 14", "Dec 14", "Jan 15", "Feb 15", "Mar 15", "Apr 15", "May 15", "Jun 15", "Jul 15", "Aug 15", "Sep 15", "Oct 15", "Nov 15", "Dec 15", "Jan 16", "Feb 16", "Mar 16", "Apr 16", "May 16", "Jun 16", "Jul 16", "Aug 16", "Sep 16", "Oct 16", "Nov 16", "Dec 16", "Jan 17", "Feb 17", "Mar 17", "Apr 17", "May 17", "Jun 17", "Jul 17", "Aug 17", "Sep 17", "Oct 17", "Nov 17", "Dec 17", "Jan 18", "Feb 18", "Mar 18", "Apr 18", "May 18", "Jun 18", "Jul 18", "Aug 18", "Sep 18", "Oct 18", "Nov 18", "Dec 18", "Jan 19", "Feb 19", "Mar 19", "Apr 19", "May 19", "Jun 19", "Jul 19", "Aug 19", "Sep 19", "Oct 19", "Nov 19", "Dec 19", "Jan 20", "Feb 20", "Mar 20", "Apr 20", "May 20", "Jun 20", "Jul 20", "Aug 20", "Sep 20", "Oct 20", "Nov 20", "Dec 20", "Jan 21", "Feb 21", "Mar 21", "Apr 21", "May 21", "Jun 21", "Jul 21", "Aug 21", "Sep 21", "Oct 21", "Nov 21", "Dec 21", "Jan 22", "Feb 22", "Mar 22", "Apr 22", "May 22", "Jun 22", "Jul 22", "Aug 22", "Sep 22", "Oct 22", "Nov 22", "Dec 22", "Jan 23", "Feb 23", "Mar 23", "Apr 23", "May 23", "Jun 23", "Jul 23", "Aug 23", "Sep 23", "Oct 23"],
+        "data": [{
+            "label": "Studio",
+            "data": [2350, 2317, 2298, 2298, 2298, 2300, 2317, 2313, 2310, 2285, 2280, 2281, 2281, 2289, 2293, 2301, 2318, 2350, 2382, 2398, 2398, 2417, 2442, 2443, 2427, 2402, 2400, 2428, 2445, 2478, 2483, 2498, 2498, 2496, 2496, 2462, 2413, 2407, 2433, 2483, 2492, 2508, 2517, 2517, 2520, 2537, 2553, 2557, 2498, 2498, 2508, 2573, 2588, 2588, 2573, 2558, 2564, 2564, 2550, 2519, 2509, 2506, 2505, 2491, 2525, 2576, 2657, 2702, 2735, 2745, 2750, 2733, 2715, 2698, 2715, 2733, 2777, 2770, 2737, 2643, 2534, 2417, 2305, 2218, 2150, 2104, 2072, 2073, 2098, 2158, 2225, 2340, 2398, 2497, 2497, 2580, 2548, 2633, 2650, 2787, 2869, 3034, 3097, 3198, 3225, 3283, 3200, 3138, 3078, 3095, 3098, 3150, 3183, 3300, 3317, 3383, 3358, 3399, 3414, 3445],
+            "borderColor": "#06283D",
+            "backgroundColor": "#06283D"
+        }, {
+            "label": "1-Bedroom",
+            "data": [2995, 2928, 2847, 2815, 2800, 2840, 2850, 2798, 2758, 2732, 2733, 2715, 2698, 2723, 2757, 2774, 2799, 2817, 2867, 2883, 2898, 2882, 2898, 2875, 2858, 2838, 2881, 2948, 2985, 3000, 3000, 3016, 3016, 3015, 2995, 2960, 2924, 2892, 2894, 2923, 2955, 2987, 2995, 3015, 3043, 3082, 3066, 3031, 2947, 2940, 2946, 2989, 2995, 2997, 3032, 3083, 3122, 3138, 3122, 3083, 3056, 3045, 3044, 2991, 3028, 3104, 3251, 3322, 3380, 3391, 3393, 3370, 3340, 3309, 3315, 3348, 3407, 3398, 3339, 3204, 3063, 2923, 2800, 2693, 2610, 2575, 2565, 2603, 2638, 2709, 2805, 2952, 2960, 3075, 3127, 3330, 3363, 3407, 3498, 3598, 3757, 3828, 3929, 4017, 4121, 4129, 4058, 3958, 3917, 3898, 3922, 4053, 4107, 4234, 4219, 4258, 4187, 4168, 4175, 4195],
+            "borderColor": "#06283D",
+            "backgroundColor": "#06283D"
+        }, {
+            "label": "2-Bedroom",
+            "data": [3550, 3517, 3433, 3400, 3367, 3417, 3433, 3367, 3317, 3279, 3296, 3263, 3215, 3225, 3258, 3260, 3267, 3265, 3332, 3363, 3365, 3332, 3315, 3282, 3248, 3200, 3275, 3373, 3457, 3480, 3480, 3495, 3491, 3476, 3476, 3432, 3407, 3373, 3395, 3437, 3472, 3532, 3563, 3593, 3593, 3592, 3616, 3609, 3512, 3490, 3532, 3665, 3698, 3665, 3640, 3608, 3608, 3612, 3596, 3561, 3515, 3497, 3448, 3388, 3423, 3539, 3765, 3897, 4013, 4048, 4148, 4197, 4195, 4095, 4043, 4043, 4143, 4128, 4030, 3832, 3690, 3573, 3457, 3349, 3294, 3260, 3262, 3280, 3297, 3346, 3392, 3525, 3642, 3850, 4067, 4358, 4323, 4272, 4128, 4230, 4330, 4595, 4827, 5064, 5151, 5219, 5283, 5300, 5365, 5397, 5555, 5690, 5792, 5800, 5600, 5432, 5230, 5297, 5347, 5445],
+            "borderColor": "#06283D",
+            "backgroundColor": "#06283D"
+        }, {
+            "label": "3-Bedroom",
+            "data": [4500, 4533, 4400, 4333, 4250, 4383, 4467, 4348, 4248, 4163, 4198, 4125, 3893, 3876, 3882, 3898, 3907, 3808, 3890, 3882, 3948, 3982, 4030, 4028, 3946, 3898, 4094, 4311, 4494, 4532, 4532, 4548, 4517, 4517, 4467, 4367, 4267, 4200, 4242, 4342, 4440, 4521, 4555, 4588, 4631, 4631, 4682, 4648, 4572, 4518, 4618, 4778, 4865, 4830, 4812, 4787, 4773, 4758, 4704, 4620, 4567, 4530, 4460, 4347, 4353, 4490, 4723, 4800, 4850, 4865, 4955, 5005, 5006, 4983, 4983, 4983, 5083, 5017, 4933, 4710, 4510, 4258, 4020, 3835, 3737, 3649, 3600, 3597, 3563, 3630, 3732, 4032, 4265, 4500, 4525, 4719, 4652, 4893, 4853, 5103, 5019, 5232, 5448, 5798, 6133, 6250, 6248, 6032, 5947, 5947, 5995, 6330, 6665, 7300, 7255, 7005, 6455, 6317, 6267, 6102],
+            "borderColor": "#06283D",
+            "backgroundColor": "#06283D"
+        }, {
+            "label": "4-Bedroom",
+            "data": [5800, 5928, 5828, 5673, 5508, 5633, 5782, 5617, 5492, 5333, 5333, 5167, 4967, 4967, 5000, 5033, 5033, 4966, 5131, 5281, 5315, 5217, 5133, 5067, 4958, 4891, 5258, 5633, 5967, 6000, 6000, 6000, 6000, 5998, 5932, 5797, 5598, 5498, 5558, 5725, 5850, 5923, 5957, 5998, 6042, 6073, 6073, 5998, 5933, 5877, 5897, 5930, 5985, 5999, 6072, 6124, 6190, 6183, 6166, 6100, 6033, 6000, 5867, 5767, 5767, 5967, 6333, 6486, 6586, 6452, 6467, 6398, 6401, 6314, 6383, 6412, 6531, 6564, 6564, 6448, 6082, 5750, 5446, 5279, 5046, 4833, 4705, 4722, 4684, 4779, 4829, 5133, 5385, 5553, 5969, 6333, 6732, 6382, 6549, 6317, 6417, 6467, 6967, 7433, 7633, 7767, 7858, 7623, 7321, 7097, 6932, 6983, 7150, 7548, 7830, 7995, 7926, 7926, 7759, 7495],
+            "borderColor": "#06283D",
+            "backgroundColor": "#06283D"
+        }]
+    });
+    Stats.load_ts_chart();
+});
+
+
+
+
+
+
+
+
+
+
+=========================
+
+            <div class="vspace-6"></div>
+                <div class="data-container" style>
+                    <table class="data-table" style="clear: none; border: none; width: 100%;">
+                        <thead>
+                            <th style="padding: 5px 0px 5px 0px; background-image: none;;
+                                                   border-top: 1px solid #dddddd; border-bottom: 5px solid #eeeeee;" class="font-size-9 b pr-4">Neighborhood
+                            </th>
+                            <th style="padding: 5px 0px 5px 0px; 
+                                                   border-top: 1px solid #dddddd; border-bottom: 5px solid #eeeeee;" class="font-size-9 b text-right pr-4">Studio
+                            </th>
+                            <th style="padding: 5px 0px 5px 0px; 
+                                                   border-top: 1px solid #dddddd; border-bottom: 5px solid #eeeeee; " class="font-size-9 b text-right pr-4">1 Bed
+                            </th>
+                            <th style="padding: 5px 0px 5px 0px; 
+                                                   border-top: 1px solid #dddddd; border-bottom: 5px solid #eeeeee; " class="font-size-9 b text-right pr-4">2 Bed
+                            </th>
+                            <th style="padding: 5px 0px 5px 0px; 
+                                                   border-top: 1px solid #dddddd; border-bottom: 5px solid #eeeeee; " class="font-size-9 b text-right">All
+                            </th>
+                        </thead>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/flatbush-new-york-ny">Flatbush, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,450 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,650 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,095 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $2,890 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/washington-heights-new-york-ny">Washington Heights, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,350 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,400 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,799 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $2,900 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/west-harlem-new-york-ny">West Harlem, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,495 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,650 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,109 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $3,000 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/harlem-new-york-ny">Harlem, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,500 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,650 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,200 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $3,061 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/crown-heights-new-york-ny">Crown Heights, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,575 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,850 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,099 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $3,100 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/bedford-stuyvesant-new-york-ny">Bedford-Stuyvesant, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,450 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,750 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,000 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $3,191 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/east-harlem-new-york-ny">East Harlem, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,795 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,995 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,695 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $3,295 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/bushwick-new-york-ny">Bushwick, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,595 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,850 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,000 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $3,299 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/upper-east-side-new-york-ny">Upper East Side, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $2,595 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,400 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,498 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $3,700 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/murray-hill-new-york-ny">Murray Hill, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,350 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,000 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $6,203 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $3,950 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/downtown-brooklyn-new-york-ny">Downtown Brooklyn, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,529 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,050 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,860 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,195 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/financial-district-new-york-ny">Financial District, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,515 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,400 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $6,320 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,200 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/long-island-city-new-york-ny">Long Island City, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,395 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,095 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,670 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,215 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/prospect-heights-new-york-ny">Prospect Heights, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,317 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,223 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $6,091 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,245 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/hudson-yards-new-york-ny">Hudson Yards, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,755 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,225 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $6,875 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,300 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/midtown-new-york-ny">Midtown, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,138 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,085 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $6,795 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,359 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/hells-kitchen-new-york-ny">Hell's Kitchen, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,500 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,033 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,850 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,470 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/kips-bay-new-york-ny">Kips Bay, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,768 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,900 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,340 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,495 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/east-village-new-york-ny">East Village, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,325 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,595 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,500 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,495 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/midtown-east-new-york-ny">Midtown East, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,150 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,274 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,931 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,538 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/west-village-new-york-ny">West Village, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,875 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,695 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,695 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,550 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/chelsea-new-york-ny">Chelsea, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,600 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,000 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $7,478 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,675 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/upper-west-side-new-york-ny">Upper West Side, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,486 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,360 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $6,157 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,700 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/lower-east-side-new-york-ny">Lower East Side, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,790 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,495 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,601 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,711 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/williamsburg-new-york-ny">Williamsburg, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,925 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,350 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,654 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $4,725 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/midtown-south-new-york-ny">Midtown South, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,076 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,000 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $7,077 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $5,000 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/greenwich-village-new-york-ny">Greenwich Village, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,200 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,200 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $6,869 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $5,100 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/gramercy-park-new-york-ny">Gramercy Park, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,913 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,175 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,611 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $5,700 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/nomad-new-york-ny">NoMad, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $4,289 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,606 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $7,949 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $5,724 </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="font-size-9 align-top pr-4">
+                                <a href="/average-rent-in/tribeca-new-york-ny">Tribeca, New York, NY</a>
+                            </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $3,999 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $5,600 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right pr-4">
+                            $7,797 </td>
+                            <td data-order style="border-bottom: 1px solid #eeeeee; padding: 5px 0px 5px 0px;" class="align-top font-size-9 text-right">
+                            $7,058 </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
